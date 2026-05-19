@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anime Hub | Drops & Price Menu</title>
+    <style>
+        :root {
+            --primary: #ff0000;
+            --dark: #111111;
+            --light: #ffffff;
+            --gray: #f8f9fa;
+            --border: #eaeaea;
+            --text-dark: #222222;
+            --text-muted: #777777;
+            --badge-warning: #ff9900;
+            --badge-success: #00cc66;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        /* Japan Flag Logo */
+        .flag-logo {
+            width: 65px;
+            height: 45px;
+            background-color: var(--light);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .red-circle {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--light);
+            font-size: 9px;
+            font-weight: 900;
+            line-height: 1.1;
+            font-family: 'MS Gothic', sans-serif;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--dark);
+            height: 25vh;
+            color: var(--light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        /* Notice Banner */
+        .announcement-banner {
+            background-color: #ffebe6;
+            border-left: 5px solid var(--primary);
+            padding: 1rem;
+            max-width: 1100px;
+            margin: 2rem auto 0 auto;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #b30000;
+            text-align: center;
+        }
+
+        /* Main Store Menu Layout */
+        main {
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary);
+            margin: 12px auto 0;
+        }
+
+        /* Pricing Grid Setup */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .menu-item {
+            background-color: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        /* Drop Tag Styling */
+        .item-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--light);
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        .badge-limited { background-color: var(--badge-warning); }
+        .badge-fullset { background-color: var(--badge-success); }
+        .badge-standard { background-color: var(--dark); }
+
+        /* Pure CSS Product Art Graphics Box */
+        .product-graphic-container {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .graphic-label {
+            color: var(--light);
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+            z-index: 5;
+        }
+
+        /* Individual CSS Vector Layout Designs */
+        .art-katana {
+            background: linear-gradient(135deg, #111 25%, #222 25%, #222 50%, #111 50%, #111 75%, #222 75%);
+            background-size: 40px 40px;
+        }
+        .art-katana::before {
+            content: ''; position: absolute; width: 80%; height: 6px; background: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.8); transform: rotate(-15deg);
+        }
+
+        .art-ramen {
+            background: radial-gradient(circle, #f9d423, #ff4e50);
+        }
+        .art-ramen::before {
+            content: '🏮'; position: absolute; font-size: 4.5rem; opacity: 0.25; top: 10px; right: 20px;
+        }
+
+        .art-manga {
+            background: linear-gradient(to right, #000, #333);
+        }
+        .art-manga::before {
+            content: 'VOL. 01'; position: absolute; bottom: 15px; right: 15px; color: var(--primary); font-weight: 900; font-size: 1.1rem; border: 2px solid var(--primary); padding: 2px 8px; transform: rotate(-5deg);
+        }
+
+        .art-bundle {
+            background: linear-gradient(45deg, #8a2387, #e94057, #f27121);
+        }
+        .art-bundle::before {
+            content: '全巻'; position: absolute; font-size: 5rem; color: #fff; opacity: 0.15; font-weight: 900;
+        }
+
+        .art-poster {
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+        }
+        .art-poster::before {
+            content: ''; position: absolute; width: 110px; height: 150px; border: 3px dashed rgba(255,255,255,0.4); transform: rotate(10deg);
+        }
+
+        .art-figure {
+            background: radial-gradient(circle, #4d35ff, #4ac1ff);
+        }
+        .art-figure::before {
+            content: 'LIMITED'; position: absolute; font-size: 0.8rem; background: var(--primary); color: #fff; padding: 3px 10px; font-weight: 800; top: 55px; transform: rotate(-10deg);
+        }
+
+        .art-merch {
+            background: repeating-linear-gradient(45deg, #111, #111 10px, #222 10px, #222 20px);
+        }
+        .art-merch::before {
+            content: ''; position: absolute; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; opacity: 0.7;
+        }
+
+        .item-details {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-size: 1.3rem;
+            text-transform: capitalize;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Premium Interactive Button Styling */
+        .order-btn {
+            width: 100%;
+            border: none;
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .order-btn:hover {
+            background-color: var(--primary);
+        }
+        
+        .order-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 6rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo-area">
+                <div class="flag-logo">
+                    <div class="red-circle">
+                        <span>アニメ</span>
+                        <span>ハブ</span>
+                    </div>
+                </div>
+                <div class="logo-text">
+                    <h1>The Anime Hub</h1>
+                </div>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop Menu</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>The Anime Hub</h2>
+        <p>Premium collectibles, authentic gear, and official merchandise.</p>
+    </section>
+
+    <div class="announcement-banner">
+        🚨 EXCLUSIVE FIRST DROP: Only 100 total Manga units available for our initial release! Restocks planned for future drops.
+    </div>
+
+    <main>
+        <h2 class="section-title">Our Price Menu</h2>
+        
+        <div class="menu-grid">
+            <!-- Item 1: Katana -->
+            <div class="menu-item">
+                <span class="item-badge badge-standard">Popular</span>
+                <div class="product-graphic-container art-katana">
+                    <span class="graphic-label">⚔️ Steel Katanas</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Katana</h3>
+                        <span class="item-price">$40</span>
+                    </div>
+                    <p class="item-description">Beautifully crafted decorative steel replica swords from your favorite series.</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 2: Ramen Bowl -->
+            <div class="menu-item">
+                <span class="item-badge badge-standard">In Stock</span>
+                <div class="product-graphic-container art-ramen">
+                    <span class="graphic-label">🍜 Merch Bowls</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Ramen Merch Bowl</h3>
+                        <span class="item-price">$20</span>
+                    </div>
+                    <p class="item-description">Authentic ceramic ramen bowls complete with matching bamboo chopsticks.</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 3: Limited Manga Drop -->
+            <div class="menu-item">
+                <span class="item-badge badge-limited">Only 100 Available!</span>
+                <div class="product-graphic-container art-manga">
+                    <span class="graphic-label">📖 Single Volumes</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Manga (Single Volume)</h3>
+                        <span class="item-price">$11</span>
+                    </div>
+                    <p class="item-description">Individual standalone volumes. Grab your copy before the initial 100-book drop sells out completely!</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 4: Full Series Bundle -->
+            <div class="menu-item">
+                <span class="item-badge badge-fullset">Complete Set Drop</span>
+                <div class="product-graphic-container art-bundle">
+                    <span class="graphic-label">📚 Full Book Sets</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Full Small Series Set</h3>
+                        <span class="item-price">$11 / Vol</span>
+                    </div>
+                    <p class="item-description">We specialize in stocking full, uninterrupted sets of shorter series or major arcs up to 32 tankobon (like Jujutsu Kaisen).</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 5: Posters -->
+            <div class="menu-item">
+                <span class="item-badge badge-standard">In Stock</span>
+                <div class="product-graphic-container art-poster">
+                    <span class="graphic-label">🖼️ Gloss Prints</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Posters</h3>
+                        <span class="item-price">$10</span>
+                    </div>
+                    <p class="item-description">High-gloss, vibrant wall prints featuring stunning promotional series art.</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 6: Figures -->
+            <div class="menu-item">
+                <span class="item-badge badge-standard">Imported</span>
+                <div class="product-graphic-container art-figure">
+                    <span class="graphic-label">🧸 Scale Figures</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Figures</h3>
+                        <span class="item-price">$25</span>
+                    </div>
+                    <p class="item-description">Detailed scale figures and prize figures imported directly from Japan.</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+
+            <!-- Item 7: Merch -->
+            <div class="menu-item">
+                <span class="item-badge badge-standard">In Stock</span>
+                <div class="product-graphic-container art-merch">
+                    <span class="graphic-label">🎒 Hub Apparel</span>
+                </div>
+                <div class="item-details">
+                    <div class="item-header">
+                        <h3 class="item-title">Merch</h3>
+                        <span class="item-price">$30</span>
+                    </div>
+                    <p class="item-description">Premium themed lifestyle accessories, keychains, and collective gear bundles.</p>
+                    <button class="order-btn">Add to Selection</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 The Anime Hub. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+
