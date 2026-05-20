@@ -769,14 +769,18 @@
 
         // Simulated Checkout Processing Function
         function processCheckoutFinalization() {
-            if (shoppingCartMatrix.length === 0) {
-                alert("Your reservation queue is empty! Add selections from the menu grid below first.");
-                return;
-            }
-            alert(`🎉 Success! Your selection has been reserved for pickup at 1515 N Town East Blvd #178. Thank you for shopping with The Anime Hub!`);
-            shoppingCartMatrix = [];
-            updateCartNavigationDisplay();
-            toggleSidebarCart(false);
+    if (shoppingCartMatrix.length === 0) {
+        alert("Your reservation queue is empty! Add selections from the menu grid below first.");
+        return;
+    }
+    
+    // Custom notification telling them to pay and pick up in-store
+    alert(`🎉 RESERVATION SUCCESSFUL!\n\nWe have held your items for you. Please come down to our physical store to pay and collect your drop:\n\n📍 1515 N Town East Blvd #178\n\nSee you at the Hub!`);
+    
+    shoppingCartMatrix = [];
+    updateCartNavigationDisplay();
+    toggleSidebarCart(false);
+}
         }
     </script>
 </body>
